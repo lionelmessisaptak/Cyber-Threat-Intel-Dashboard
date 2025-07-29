@@ -72,14 +72,23 @@ The following collections are used:
 ## Project Structure
 
 Cyber-Threat-Intel-Dashboard/
+
 ├── app/
+
 │ ├── templates/ # HTML templates (Jinja2)
+
 │ ├── static/ # CSS and JS assets
+
 │ ├── routes.py # Flask routes
+
 │ ├── api_handlers.py # VirusTotal & AbuseIPDB logic
+
 │ └── ...
+
 ├── requirements.txt # Python dependencies
+
 ├── run.py # Flask entry point
+
 └── README.md # Project documentation
 
 
