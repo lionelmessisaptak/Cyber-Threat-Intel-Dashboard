@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File | CTI Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>CTI Dashboard</h2>
+        <a href="{{ url_for('routes.dashboard') }}">Overview</a>
+        <a href="{{ url_for('routes.lookup') }}">Lookup</a>
+        <a href="{{ url_for('routes.upload_file') }}">Upload</a>
+        <a href="{{ url_for('routes.scan_results')}}">Scan Logs</a>
+        <a href="{{ url_for('routes.settings')}}">Settings</a>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle" onclick="toggleTheme()" title="Toggle Theme"></button>
+
+    <!-- Main Content -->
+    <div class="main">
+        <h1>Upload File for Threat Analysis</h1>
+
+        <!-- Upload Form -->
+        <div class="card" style="margin-bottom: 20px;">
+            <form action="{{ url_for('routes.upload_file') }}" method="POST" enctype="multipart/form-data"
+                style="display: flex; align-items: center; gap: 20px;">
+                <input type="file" name="file" required
+                    style="padding: 8px; background-color: #1c2c3c; color: white; border: 1px solid #415a77; border-radius: 6px;">
+                <button type="submit"
+                    style="padding: 8px 16px; background-color: #415a77; color: white; border: none; border-radius: 6px;">Upload
+                    & Scan</button>
+            </form>
+        </div>
+
+        <!-- Error Display -->
+        {% if error %}
+        <div class="card" style="background-color: #ffdddd; color: darkred;">
+            <p><strong>Error:</strong> {{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Scan Result Display -->
+        {% if result %}
+        <div class="card">
+            <h3>Scan Result:</h3>
+
+            {% if result.error %}
+            <p style="color: red;">{{ result.error }}</p>
+            {% else %}
+            <ul style="list-style: none; padding: 0;">
+                <li><strong>SHA256:</strong> {{ result.sha256 }}</li>
+                <li><strong>Status:</strong> {{ result.status or 'Unknown' }}</li>
+                <li><strong>First Seen:</strong> {{ result.first_seen or 'N/A' }}</li>
+                <li><strong>Last Analysis:</strong> {{ result.last_analysis or 'N/A' }}</li>
+                <li><strong>Malicious Detections:</strong> {{ result.malicious_count }}/{{ result.total_engines }}</li>
+            </ul>
+
+            <div class="lookup-links" style="margin-top: 10px;">
+                {% if result.vt_link %}
+                <a href="{{ result.vt_link }}" target="_blank">🔍 View on VirusTotal</a>
+                {% else %}
+                <a href="https://www.virustotal.com/gui/file/{{ result.sha256 }}" target="_blank">🔍 View on VirusTotal</a>
+                {% endif %}
+
+                {% if result.sha256 %}
+                <form method="GET" action="{{ url_for('routes.refresh_scan', sha256=result.sha256) }}">
+                    <button type="submit" style="
+                        padding: 8px 16px;
+                        background-color: #415a77;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        margin-top: 10px;">
+                        🔁 Refresh Results
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

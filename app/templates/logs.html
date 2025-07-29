@@ -1,0 +1,133 @@
+<!-- logs.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Logs | CTI Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>CTI Dashboard</h2>
+        <a href="/">Overview</a>
+        <a href="/lookup">Lookup</a>
+        <a href="/upload">Upload</a>
+        <a href="/logs">Scan Logs</a>
+        <a href="/settings">Settings</a>
+    </div>
+
+    <div class="main">
+        <h1>Scan Logs</h1>
+
+        <div class="logs-button-box">
+            <button class="log-button" data-target="ip-log-section">🌐 Recent IP Searches</button>
+            <button class="log-button" data-target="hash-log-section">🔍 Hash Searches</button>
+            <button class="log-button" data-target="upload-log-section">📁 File Uploads</button>
+        </div>
+
+        <div id="ip-log-section" class="log-section">
+            <div class="log-card">
+                <h2>🌐 IP Logs</h2>
+                {% if ip_logs %}
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Country</th>
+                            <th>ISP</th>
+                            <th>Abuse Score</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in ip_logs %}
+                        <tr>
+                            <td>{{ log.ip }}</td>
+                            <td>{{ log.country }}</td>
+                            <td>{{ log.isp }}</td>
+                            <td>{{ log.abuse_score }}</td>
+                            <td>{{ log.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="no-results">No IP logs found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+        <div id="hash-log-section" class="log-section hidden">
+            <div class="log-card">
+                <h2>🔍 Hash Logs</h2>
+                {% if hash_logs %}
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>SHA256</th>
+                            <th>Status</th>
+                            <th>Malicious</th>
+                            <th>Total Engines</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in hash_logs %}
+                        <tr>
+                            <td class="mono">{{ log.sha256 }}</td>
+                            <td>{{ log.status }}</td>
+                            <td>{{ log.malicious_count }}</td>
+                            <td>{{ log.total_engines }}</td>
+                            <td>{{ log.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="no-results">No hash logs found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+        <div id="upload-log-section" class="log-section hidden">
+            <div class="log-card">
+                <h2>📁 File Upload Logs</h2>
+                {% if file_logs %}
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>SHA256</th>
+                            <th>Malicious</th>
+                            <th>Total Engines</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in file_logs %}
+                        <tr>
+                            <td>{{ log.filename }}</td>
+                            <td class="mono">{{ log.sha256 }}</td>
+                            <td>{{ log.malicious_count }}</td>
+                            <td>{{ log.total_engines }}</td>
+                            <td>{{ log.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="no-results">No file upload logs found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

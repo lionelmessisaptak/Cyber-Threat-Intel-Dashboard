@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cyber Threat Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- External Scripts + Styles -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>CTI Dashboard</h2>
+        <a href="/">Overview</a>
+        <a href="/lookup">Lookup</a>
+        <a href="/upload">Upload</a>
+        <a href="/logs">Scan Logs</a>
+        <a href="/settings">Settings</a>
+    </div>
+
+    <div class="main">
+        <h1>Cyber Threat Intelligence Overview</h1>
+
+        <!-- Cards -->
+        <div class="cards">
+            <div class="card">
+                <h3>Total Scans</h3>
+                <p><strong>{{ total_scans }}</strong></p>
+            </div>
+            <div class="card">
+                <h3>Malicious</h3>
+                <p><strong>{{ malicious_scans }}</strong></p>
+            </div>
+            <div class="card">
+                <h3>Clean</h3>
+                <p><strong>{{ clean_scans }}</strong></p>
+            </div>
+        </div>
+
+        <!-- Graph + Top Threats -->
+        <div class="graphs-live">
+            <div class="graph">
+                <h3>Scan Trends</h3>
+                <div style="max-width: 300px; margin: auto;">
+                    <canvas id="scanChart" width="300" height="300"></canvas>
+                </div>
+            </div>
+
+            <div class="top-threats">
+                <h3>Top Threats</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for threat in top_threats %}
+                        <tr>
+                            <td>{{ threat.value }}</td>
+                            <td>{{ threat.type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    <script>
+        const ctx = document.getElementById('scanChart').getContext('2d');
+        const scanChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Malicious', 'Clean'],
+                datasets: [{
+                    label: 'Scan Distribution',
+                    data: [{{ malicious_scans }}, {{ clean_scans }}],
+                    backgroundColor: ['#e74c3c', '#2ecc71'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Malicious vs Clean Files' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

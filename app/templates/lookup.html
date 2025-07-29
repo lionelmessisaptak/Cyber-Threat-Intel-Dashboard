@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>IP / Hash Lookup | CTI Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@2.0.0"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>CTI Dashboard</h2>
+        <a href="/">Overview</a>
+        <a href="/lookup">Lookup</a>
+        <a href="/upload">Upload</a>
+        <a href="/logs">Scan Logs</a>
+        <a href="/settings">Settings</a>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle" onclick="toggleTheme()" title="Toggle Theme"></button>
+
+    <!-- Main -->
+    <div class="main">
+        <h1>IP / Hash Lookup</h1>
+
+        <!-- Search Form -->
+        <div class="card center-card">
+            <form method="POST" action="/lookup" class="lookup-form">
+                <div class="radio-group">
+                    <label><input type="radio" name="query_type" value="ip" {% if selected_type=='ip' %}checked{% endif %}> IP</label>
+                    <label><input type="radio" name="query_type" value="hash" {% if selected_type=='hash' %}checked{% endif %}> Hash</label>
+                </div>
+                <input type="text" name="query_value" placeholder="Enter IP or Hash" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Lookup Result Section -->
+        <div class="lookup-grid">
+            <!-- Left: Lookup Details -->
+            <div class="card">
+                <h3>Lookup Result:</h3>
+                {% if result and result.ipAddress %}
+                <ul class="result-list">
+                    <li><strong>IP Address:</strong> {{ result.ipAddress }}</li>
+                    <li><strong>Country:</strong> {{ result.countryName or result.countryCode }}</li>
+                    <li><strong>ISP:</strong> {{ result.isp }}</li>
+                    <li><strong>Usage Type:</strong> {{ result.usageType }}</li>
+                    <li><strong>ASN:</strong> {{ result.asn }}</li>
+                    <li><strong>Domain:</strong> {{ result.domain }}</li>
+                    <li><strong>Total Reports:</strong> {{ result.totalReports }}</li>
+                </ul>
+
+                <div class="lookup-links">
+                    <a href="https://who.is/whois-ip/ip-address/{{ result.ipAddress }}" target="_blank">🔍 WHOIS Lookup</a>
+                    <a href="https://www.abuseipdb.com/report?ip={{ result.ipAddress }}" target="_blank">🚩 Report Abuse</a>
+                </div>
+
+                {% if result.reports %}
+                <h3>Recent Reports</h3>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Reporter</th>
+                            <th>Timestamp</th>
+                            <th>Comment</th>
+                            <th>Categories</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-body">
+                        {% for report in result.reports %}
+                        <tr class="report-row" {% if loop.index > 20 %}style="display: none;"{% endif %}>
+                            <td>{{ report.reporter or 'Anonymous' }}</td>
+                            <td>{{ report.reportedAt }}</td>
+                            <td>{{ report.comment }}</td>
+                            <td>{{ report.categories | join(', ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div id="report-controls">
+                    {% if result.reports|length > 20 %}
+                    <button id="show-more" onclick="showMoreReports()">Show More</button>
+                    <button id="show-less" onclick="showLessReports()" style="display:none;">Show Less</button>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% elif result and result.sha256 %}
+                <ul class="result-list">
+                    <li><strong>SHA256:</strong> {{ result.sha256 }}</li>
+                    <li><strong>Status:</strong> {{ result.status or 'Unknown' }}</li>
+                    <li><strong>First Seen:</strong> {{ result.first_seen or 'N/A' }}</li>
+                    <li><strong>Last Analysis:</strong> {{ result.last_analysis or 'N/A' }}</li>
+                    <li><strong>Malicious Detections:</strong> {{ result.malicious_count }}/{{ result.total_engines }}</li>
+                </ul>
+
+                <div class="lookup-links">
+                    <a href="https://www.virustotal.com/gui/file/{{ result.sha256 }}" target="_blank">🔍 View on VirusTotal</a>
+                </div>
+
+                {% else %}
+                <p>No result to display.</p>
+                {% endif %}
+            </div>
+
+            <!-- Right: Gauge -->
+            {% if selected_type == 'ip' and result and result.abuseConfidenceScore is defined %}
+            <div class="card sticky-card">
+                <h4>Abuse Score Gauge</h4>
+                <canvas id="abuseGauge" width="250" height="140" data-score="{{ result.abuseConfidenceScore }}"></canvas>
+                <p><strong>ABUSE SCORE: {{ result.abuseConfidenceScore }}/100</strong></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

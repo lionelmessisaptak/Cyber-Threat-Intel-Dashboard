@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings | CTI Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>CTI Dashboard</h2>
+        <a href="/">Overview</a>
+        <a href="/lookup">Lookup</a>
+        <a href="/upload">Upload</a>
+        <a href="/logs">Scan Logs</a>
+        <a href="/settings" class="active">Settings</a>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle" onclick="toggleTheme()" title="Toggle Theme"></button>
+
+    <!-- Main -->
+    <div class="main">
+        <h1>Settings</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="card" style="max-width: 600px;">
+            <h3>API Configuration</h3>
+            <form method="POST" action="/save-api-keys">
+                <label for="abuse_api">AbuseIPDB API Key:</label>
+                <input type="text" id="abuse_api" name="abuse_api" placeholder="Enter AbuseIPDB API Key" required>
+
+                <label for="vt_api">VirusTotal API Key:</label>
+                <input type="text" id="vt_api" name="vt_api" placeholder="Enter VirusTotal API Key" required>
+
+                <button type="submit" style="margin-top: 10px;">Save API Keys</button>
+            </form>
+        </div>
+
+        <div class="card" style="margin-top: 30px; max-width: 600px;">
+            <h3>Host & Port Settings (Optional)</h3>
+            <form method="POST" action="/save-host-port">
+                <label for="host">Host:</label>
+                <input type="text" id="host" name="host" placeholder="127.0.0.1" value="{{ host }}">
+
+                <label for="port">Port:</label>
+                <input type="number" id="port" name="port" placeholder="5000" value="{{ port }}">
+
+                <button type="submit" style="margin-top: 10px;">Save Host & Port</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,456 @@
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0d1b2a;
+    color: #ffffff;
+}
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background-color: #1b263b;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    color: #c0c0c0;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #415a77;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+}
+
+.graphs-live {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.graph, .top-threats {
+    background-color: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.top-threats table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.top-threats th, .top-threats td {
+    padding: 10px;
+    border-bottom: 1px solid #324c63;
+    text-align: left;
+}
+
+.top-threats th {
+    background-color: #324c63;
+    color: white;
+}
+
+.live-feed ul {
+    list-style: none;
+    padding: 0;
+}
+
+.live-feed li {
+    margin-bottom: 12px;
+    background: #243b55;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.live-feed .source {
+    font-size: 0.85em;
+    color: #a0a0a0;
+}
+
+/* Lookup Page Specific */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #aaa;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.report-table th {
+    background-color: #415a77;
+    color: white;
+}
+
+.lookup-links a {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 5px;
+    text-decoration: none;
+    color: white;
+    background-color: #1b263b;
+    border-radius: 5px;
+}
+
+.lookup-links a:hover {
+    background-color: #778da9;
+}
+
+/* Gauge visual guides */
+.gauge-metrics {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    color: #ccc;
+    font-size: 0.8em;
+}
+
+.gauge-metrics div {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.gauge-metrics .zero {
+    top: 90%;
+    left: 5%;
+    transform: translateX(-50%);
+}
+
+.gauge-metrics .fifty {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gauge-metrics .hundred {
+    top: 90%;
+    left: 95%;
+    transform: translateX(-50%);
+}
+
+/* Report Page Buttons */
+#report-controls button {
+    background-color: #1b263b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#report-controls button:hover {
+    background-color: #324c63;
+}
+
+/* Scan Results */
+.button-group {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.toggle-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #1b263b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.toggle-btn:hover {
+    background-color: #2c3e50;
+    transform: translateY(-2px);
+}
+
+.result-section {
+    margin-top: 30px;
+}
+
+.result-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.result-list li {
+    background: #1b263b;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Box Background behind Buttons in /logs Page */
+.logs-button-box {
+    background-color: #1b263b;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    justify-content: flex-start;
+}
+
+.log-button {
+    background-color: #1b263b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    min-width: 200px;
+}
+
+.log-button:hover {
+    background-color: #2c3e50;
+}
+
+.log-section {
+    display: none;
+    margin-top: 20px;
+}
+
+.log-card {
+    background-color: #1b263b;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.log-table th,
+.log-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.log-table th {
+    background-color: #324c63;
+    color: white;
+}
+
+.card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.card input[type="text"],
+.card input[type="number"],
+.card input[type="password"],
+.card input[type="email"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: var(--card-bg, #1b263b);
+    color: var(--text-color, #ffffff);
+}
+
+.card input:focus {
+    border-color: #778da9;
+    outline: none;
+}
+
+.card button[type="submit"] {
+    align-self: center;
+    background-color: #415a77;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.card button[type="submit"]:hover {
+    background-color: #2e4a66;
+}
+
+/* Lookup form styling */
+.lookup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 20px 0;
+}
+
+.lookup-form input[type="text"] {
+    width: 300px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #1b263b;
+    color: #fff;
+}
+
+.lookup-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #415a77;
+    color: white;
+    cursor: pointer;
+}
+
+.lookup-form button:hover {
+    background-color: #2e4a66;
+}
+
+.lookup-form .radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.lookup-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.lookup-grid.single-column {
+    grid-template-columns: 1fr;
+    justify-content: center;
+}
+
+.sticky-card {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    text-align: center;
+}
+
+.lookup-result-box {
+    background-color: #1b263b;
+    padding: 20px;
+    border-radius: 10px;
+    color: #e0e1dd;
+    margin-top: 20px;
+    line-height: 1.6;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Common styling for forms on lookup and upload pages */
+.form-center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.form-center-wrapper form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-center-wrapper input[type="text"],
+.form-center-wrapper input[type="file"] {
+    padding: 10px;
+    width: 300px;
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #ccc);
+    margin-bottom: 10px;
+    background-color: var(--input-bg-color, #1b263b);
+    color: var(--text-color, #ffffff);
+}
+
+.form-center-wrapper button {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--primary-color, #415a77);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-center-wrapper button:hover {
+    background-color: var(--primary-dark, #2e4a66);
+}
+
+.flash {
+    background-color: #1e90ff;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
