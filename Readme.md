@@ -9,7 +9,6 @@ A web-based Cyber Threat Intelligence Dashboard built with Flask and MongoDB. It
 - IP, hash, and file scan logs stored in MongoDB
 - Dashboard with clean vs malicious detection stats
 - Live Threat Feed and Top Threats sections
-- Theme toggle for dark/light mode
 - Settings page to manage API keys and server configuration
 - Modular layout with separate HTML, CSS, and JS
 
